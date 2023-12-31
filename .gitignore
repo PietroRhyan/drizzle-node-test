@@ -1,0 +1,11 @@
+## VSCode
+.vscode
+
+## Coverage
+coverage
+
+## Node Modules
+node_modules
+
+## Env
+.env
