@@ -1,8 +1,8 @@
 import { Router } from 'express'
-import { isAuthenticated } from 'src/middlewares/auth'
-import { authenticateUserController } from 'src/modules/user/controllers/authenticateUserController'
-import { createUserController } from 'src/modules/user/controllers/createUserController'
-import { getAllUsersController } from 'src/modules/user/controllers/getAllUsersController'
+import { isAuthenticated } from '../middlewares/auth'
+import { authenticateUserController } from '../modules/user/controllers/authenticateUserController'
+import { createUserController } from '../modules/user/controllers/createUserController'
+import { getAllUsersController } from '../modules/user/controllers/getAllUsersController'
 
 const router = Router()
 

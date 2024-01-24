@@ -5,9 +5,9 @@ export const getAllUsersController = async (req: Request, res: Response) => {
   try {
     const users = await getAllUsers()
 
-    return res.sendStatus(200).json(users)
+    return res.status(200).send(users)
   } catch (e) {
     console.log('Error: ', e)
-    return res.sendStatus(400)
+    return res.status(400)
   }
 }

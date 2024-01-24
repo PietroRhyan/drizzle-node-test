@@ -1,20 +1,24 @@
 import { Request, Response } from "express";
 import { createUser } from "../useCases/createUserUseCase";
 import { getUserByEmail } from "../useCases/getUserByEmailUseCase";
-import { authentication } from "src/modules/helpers";
+import { authentication } from "../../../modules/helpers";
 
 export const createUserController = async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body
 
+    console.log("user:", name, email, password)
+
     if (!name || !email || !password) {
-      return res.sendStatus(400)
+      return res.status(400).send({ error: "User invalid credentials: Some spelling error." })
     }
 
     const result = await getUserByEmail(email)
 
+    console.log(result)
+
     if (!result || result.length > 0) {
-      return res.sendStatus(400).json({ error: 'User already created!' })
+      return res.status(400).send({ error: 'User already created!' })
     }
 
     const user = await createUser({
@@ -23,9 +27,9 @@ export const createUserController = async (req: Request, res: Response) => {
       password: authentication(password)
     })
 
-    return res.sendStatus(200).json(user).end()
+    return res.status(200).send(user).end()
   } catch(e) {
     console.log('Error: ', e)
-    return res.sendStatus(400)
+    return res.status(400)
   }
 }
