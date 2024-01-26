@@ -5,12 +5,13 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "tsx watch --env-file .env src/index.ts",
+    "studio": "drizzle-kit studio --port 3636 --verbose",
     "migrations:generate": "drizzle-kit generate:pg --config=drizzle.config.ts",
     "migrations:push": "drizzle-kit push:pg --config=drizzle.config.ts",
     "migrations:drop": "drizzle-kit drop --config=drizzle.config.ts",
-    "build": "tsc"
+    "build": "tsx"
   },
   "author": "Pietro Rhyan",
   "license": "ISC",
@@ -18,8 +19,13 @@
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.10.6",
-    "drizzle-kit": "^0.20.9",
+    "drizzle-kit": "^0.20.13",
+    "jest": "^29.7.0",
+    "pg": "^8.11.3",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
   },
