@@ -1,35 +1,23 @@
-// import { Request, Response } from "express";
-// import { createUser } from "../useCases/createUserUseCase";
-// import { getUserByEmail } from "../useCases/getUserByEmailUseCase";
-// import { authentication } from "../../../modules/helpers";
+import { Request, Response } from "express";
+import { CreateUserUseCase } from "../useCases/createUserUseCase";
+import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
 
-// export const createUserController = async (req: Request, res: Response) => {
-//   try {
-//     const { name, email, password } = req.body
+class CreateUserController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const infraUsersRepository = new InfraUsersRepository()
+    const usersRepository = new CreateUserUseCase(infraUsersRepository)
 
-//     console.log("user:", name, email, password)
+    try {
+      const { name, email, password } = req.body
 
-//     if (!name || !email || !password) {
-//       return res.status(400).send({ error: "User invalid credentials: Some spelling error." })
-//     }
+      await usersRepository.execute({ name, email, password })
 
-//     const result = await getUserByEmail(email)
+      return res.status(201).send()
+    } catch (e) {
+      console.log("Error: ", e)
+      return res.status(400).send()
+    }
+  } 
+}
 
-//     console.log(result)
-
-//     if (!result || result.length > 0) {
-//       return res.status(400).send({ error: 'User already created!' })
-//     }
-
-//     const user = await createUser({
-//       name, 
-//       email,
-//       password: authentication(password)
-//     })
-
-//     return res.status(200).send(user).end()
-//   } catch(e) {
-//     console.log('Error: ', e)
-//     return res.status(400)
-//   }
-// }
+export { CreateUserController }

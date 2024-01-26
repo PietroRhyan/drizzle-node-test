@@ -6,7 +6,7 @@ interface UsersRepositoryRequest {
   password: string
 }
 
-export class createUserUseCase {
+export class CreateUserUseCase {
   constructor(
     private usersRepository: UsersRepository
   ) {}

@@ -1,10 +1,10 @@
 import { InMemoryUsersRepository } from "../repositories/in-memory/InMemoryUsersRepository"
-import { createUserUseCase } from "./createUserUseCase"
+import { CreateUserUseCase } from "./createUserUseCase"
 
 describe('Create User Use Case', () => {
   it("should be able to create a new user", async () => {
     const inMemoryCreateUser = new InMemoryUsersRepository()
-    const createUser = new createUserUseCase(inMemoryCreateUser)
+    const createUser = new CreateUserUseCase(inMemoryCreateUser)
 
     const testUser = {
       name: 'Pietro',
