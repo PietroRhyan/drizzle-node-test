@@ -1,44 +1,28 @@
 import { Request, Response } from "express";
-import { updateUser } from '../useCases/updateUserUseCase'
-import { getUserByEmail } from "../useCases/getUserByEmailUseCase";
-import { authentication, generateSessionToken } from "../../../modules/helpers";
 import { SESSION_TOKEN } from "../../../constants/";
+import { AuthenticateUserUseCase } from "../useCases/authenticateUserUseCase";
+import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
 
-export const authenticateUserController = async (req: Request, res: Response) => {
-  try {
-    const { email, password } = req.body
+export class AuthenticateUserController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const infraUsersRepository = new InfraUsersRepository()
+    const authRepository = new AuthenticateUserUseCase(infraUsersRepository)
 
-    if (!email || !password) {
-      return res.status(400).send({ error: "User invalid credentials: Some spelling error." })
+    try {
+      const { email, password } = req.body
+
+      const authenticatedUser = await authRepository.execute({ email, password })
+
+      res.cookie(SESSION_TOKEN, authenticatedUser.sessionToken, {
+        domain: process.env.NODE_ENV ? 'production' : 'localhost',
+        path: '/',
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3) // 3 days
+      })
+
+      return res.status(200).send(authenticatedUser)
+    } catch (e) {
+      console.log('Error: ', e)
+      return res.status(400).send()
     }
-
-    const result = await getUserByEmail(email)
-
-    if (!result || result.length === 0) {
-      return res.status(400).send({ error: 'User not found!' })
-    }
-
-    const user = result[0]
-
-    const expectedHash = authentication(password)
-
-    if (user.password !== expectedHash) {
-      return res.status(403).send({ error: 'User unauthorized!' })
-    }
-
-    user.sessionToken = generateSessionToken()
-
-    const updatedUser = await updateUser(user, user.id)
-
-    res.cookie(SESSION_TOKEN, user.sessionToken, {
-      domain: process.env.NODE_ENV ? 'production' : 'localhost',
-      path: '/',
-      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3) // 3 days
-    })
-    
-    return res.status(200).send(updatedUser).end()
-  } catch (e) {
-    console.log('Error: ', e)
-    return res.status(400)
   }
 }

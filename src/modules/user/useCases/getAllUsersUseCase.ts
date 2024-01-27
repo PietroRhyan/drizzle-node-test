@@ -1,6 +1,21 @@
-import { db } from "../../../db/config"
-import { users } from "../../../db/schemas/user"
+import { UsersRepository } from "../repositories/UsersRepository";
 
-export const getAllUsers = async () => {
-  return await db.select().from(users) 
+interface GetAllUsersUseCaseResponse {
+  id: string
+  name: string
+  email: string
+  password: string
+  sessionToken: string | null
+}
+
+export class GetAllUsersUseCase {
+  constructor (
+    private userRepository: UsersRepository
+  ) {}
+
+  async execute(): Promise<GetAllUsersUseCaseResponse[]> {
+    const users = await this.userRepository.getAll()
+
+    return users
+  }
 }

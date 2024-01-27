@@ -1,7 +1,25 @@
-import { eq } from "drizzle-orm"
-import { db } from "../../../db/config"
-import { users } from "../../../db/schemas/user"
+import { UsersRepository } from "../repositories/UsersRepository";
 
-export const getUserBySessionToken = async (sessionToken: string) => {
-  return await db.select().from(users).where(eq(users.sessionToken, sessionToken))
+interface GetUserBySessionTokenUseCaseResponse {
+  id: string
+  name: string
+  email: string
+  password: string
+  sessionToken: string | null
+}
+
+export class GetUserBySessionTokenUseCase {
+  constructor(
+    private userRepository: UsersRepository
+  ) {}
+
+  async execute(sessionToken: string): Promise<GetUserBySessionTokenUseCaseResponse> {
+    const user = await this.userRepository.findBySessionToken(sessionToken)
+
+    if (!user) {
+      throw new Error("User don't exist.")
+    }
+
+    return user
+  }
 }

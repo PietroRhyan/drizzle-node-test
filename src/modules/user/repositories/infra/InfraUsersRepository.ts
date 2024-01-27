@@ -12,8 +12,10 @@ export class InfraUsersRepository implements UsersRepository {
     return await db.select().from(users)
   }
 
-  async update(data: NewUser, id: string): Promise<void> {
-    await db.update(users).set(data).where(eq(users.id, id))
+  async update(newUser: NewUser, id: string): Promise<NewUser> {
+    const result = await db.update(users).set(newUser).where(eq(users.id, id))
+    console.log("RESULTADO: ", result)
+    return result[0]
   }
 
   async delete(id: string): Promise<void> {

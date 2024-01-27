@@ -1,6 +1,7 @@
+import { authentication } from "modules/helpers";
 import { UsersRepository } from "../repositories/UsersRepository";
 
-interface UsersRepositoryRequest {
+interface CreateUserUseCaseRequest {
   name: string
   email: string
   password: string
@@ -11,9 +12,9 @@ export class CreateUserUseCase {
     private usersRepository: UsersRepository
   ) {}
 
-  async execute({ name, email, password }: UsersRepositoryRequest) {
+  async execute({ name, email, password }: CreateUserUseCaseRequest) {
     if (!name || !email || !password) {
-      throw new Error("The fields name, email and password is required.")
+      throw new Error("The fields 'name', 'email' and 'password' is required.")
     }
 
     const userExists = await this.usersRepository.findByEmail(email)
@@ -22,6 +23,6 @@ export class CreateUserUseCase {
       throw new Error("User already exists.")
     }
 
-    await this.usersRepository.create({ name, email, password })
+    await this.usersRepository.create({ name, email, password: authentication(password) })
   }
 }

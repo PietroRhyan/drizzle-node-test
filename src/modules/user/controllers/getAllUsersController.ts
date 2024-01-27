@@ -1,13 +1,19 @@
 import { Request, Response } from "express";
-import { getAllUsers } from "../useCases/getAllUsersUseCase";
+import { GetAllUsersUseCase } from "../useCases/getAllUsersUseCase";
+import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
 
-export const getAllUsersController = async (req: Request, res: Response) => {
-  try {
-    const users = await getAllUsers()
+export class GetAllUsersController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const infraUsersRepository = new InfraUsersRepository()
+    const usersRepository = new GetAllUsersUseCase(infraUsersRepository)
 
-    return res.status(200).send(users)
-  } catch (e) {
-    console.log('Error: ', e)
-    return res.status(400)
+    try {
+      const users = await usersRepository.execute()
+
+      return res.status(200).send(users)
+    } catch (e) {
+      console.log("Error: ", e)
+      return res.status(400).send()
+    }
   }
 }

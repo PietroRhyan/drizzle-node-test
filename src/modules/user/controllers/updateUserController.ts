@@ -1,33 +1,21 @@
 import { Request, Response } from "express"
-import { getUserById } from "../useCases/getUserByIdUseCase"
-import { updateUser } from "../useCases/updateUserUseCase"
+import { UpdateUserUseCase } from "../useCases/updateUserUseCase"
+import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository"
 
-export const updateUserController = async (req: Request, res: Response) => {
-  try {
-    const { id, name, email, password } = req.body
+export class UpdateUserController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const infraUsersRepository = new InfraUsersRepository()
+    const usersRepository = new UpdateUserUseCase(infraUsersRepository)
 
-    if (!id ) {
-      return res.status(400).send({ error: "User id most be provided!" })
+    try {
+      const { id, name, email, password } = req.body
+
+      await usersRepository.execute({ name, email, password }, id)
+
+      return res.status(200).send()
+    } catch (e) {
+      console.log("Error: ", e)
+      return res.status(400).send()
     }
-
-    const result = await getUserById(id) 
-
-    const user = result[0]
-
-    if (!user) {
-      return res.status(400).send({ error: "User not found!" })
-    }
-
-    if (name || email || password) {
-      user.name = name ?? user.name
-      user.email = email ?? user.email
-      user.password = password ?? user.password
-    }
-
-    const updatedUser = await updateUser(user, user.id)
-    return res.status(200).send(updatedUser)
-  } catch (e) {
-    console.log("Error: ", e)
-    return res.status(400)
   }
 }

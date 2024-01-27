@@ -21,14 +21,17 @@ export class InMemoryUsersRepository implements UsersRepository {
     return allUsers
   }
 
-  async update({ name, email, password }: NewUser, id: string): Promise<void> {
+  async update(newUser: NewUser, id: string): Promise<NewUser> {
     const result = this.users.filter(user => user.id === id)
 
     const user = result[0]
 
-    user.name = name
-    user.email = email
-    user.password = password
+    user.name = newUser.name
+    user.email = newUser.email
+    user.password = newUser.password
+    user.sessionToken = newUser.sessionToken ?? null
+
+    return user
   }
 
   async delete(id: string): Promise<void> {

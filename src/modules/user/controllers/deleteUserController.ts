@@ -1,27 +1,21 @@
 import { Request, Response } from "express"
-import { deleteUser } from '../useCases/deleteUserUseCase'
-import { getUserById } from "../useCases/getUserByIdUseCase"
+import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository"
+import { DeleteUserUseCase } from "../useCases/deleteUserUseCase"
 
-export const deleteUserController = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.body
+export class DeleteUserController {
+  async handle(req: Request, res: Response): Promise<Response> {
+    const infraUsersRepository = new InfraUsersRepository()
+    const userRepository = new DeleteUserUseCase(infraUsersRepository)
 
-    if (!id) {
-      return res.status(400).send({ error: "User invalid credentials: Some spelling error." })
+    try {
+      const { id } = req.body
+
+      await userRepository.execute(id)
+
+      return res.status(200).send()
+    } catch (e) {
+      console.log("Error: ", e)
+      return res.status(400).send()
     }
-
-    const result = await getUserById(id)
-
-    const user = result[0]
-
-    if (!user) {
-      return res.status(400).send({ error: "User not found!"})
-    }
-
-    const deletedUser = await deleteUser(user.id)
-    return res.status(200).send(deletedUser)
-  } catch (e) {
-    console.log("Error: ", e)
-    return res.status(400)
   }
 }

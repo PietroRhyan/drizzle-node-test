@@ -1,7 +1,21 @@
-import { eq } from "drizzle-orm"
-import { db } from "../../../db/config"
-import { users } from "../../../db/schemas/user"
+import { UsersRepository } from "../repositories/UsersRepository";
 
-export const deleteUser = async (id: string) => {
-  return await db.delete(users).where(eq(users.id, id)).returning({ id: users.id, name: users.name })
+export class DeleteUserUseCase {
+  constructor (
+    private usersRepository: UsersRepository
+  ) {}
+
+  async execute(id: string) {
+    if (!id) {
+      throw new Error("The field 'id' is required.")
+    } 
+
+    const userExists = await this.usersRepository.findById(id)
+
+    if (!userExists) {
+      throw new Error("User don't exist.")
+    }
+
+    await this.usersRepository.delete(id)
+  }  
 }
