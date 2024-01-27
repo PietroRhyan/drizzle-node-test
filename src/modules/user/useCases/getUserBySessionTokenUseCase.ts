@@ -1,3 +1,4 @@
+import { AppError } from "errors/AppErrors";
 import { UsersRepository } from "../repositories/UsersRepository";
 
 interface GetUserBySessionTokenUseCaseResponse {
@@ -17,7 +18,7 @@ export class GetUserBySessionTokenUseCase {
     const user = await this.userRepository.findBySessionToken(sessionToken)
 
     if (!user) {
-      throw new Error("User don't exist.")
+      throw new AppError("User is not authenticated.", 401)
     }
 
     return user

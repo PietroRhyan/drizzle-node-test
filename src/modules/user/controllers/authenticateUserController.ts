@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { SESSION_TOKEN } from "../../../constants/";
 import { AuthenticateUserUseCase } from "../useCases/authenticateUserUseCase";
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
+import { AppError } from "errors/AppErrors";
 
 export class AuthenticateUserController {
   async handle(req: Request, res: Response): Promise<Response> {
@@ -21,6 +22,11 @@ export class AuthenticateUserController {
 
       return res.status(200).send(authenticatedUser)
     } catch (e) {
+      if (e instanceof AppError) {
+        console.log('Error:', e.message)
+        return res.status(e.statusCode).send({ error: e.message })
+      }
+      
       console.log('Error: ', e)
       return res.status(400).send()
     }

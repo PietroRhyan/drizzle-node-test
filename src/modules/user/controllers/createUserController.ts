@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserUseCase } from "../useCases/createUserUseCase";
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
+import { AppError } from "errors/AppErrors";
 
 export class CreateUserController {
   async handle(req: Request, res: Response): Promise<Response> {
@@ -14,7 +15,12 @@ export class CreateUserController {
 
       return res.status(201).send()
     } catch (e) {
-      console.log("Error: ", e)
+      if (e instanceof AppError) {
+        console.log("Error:", e.message)
+        return res.status(e.statusCode).send({ error: e.message })
+      }
+
+      console.log("Error:", e)
       return res.status(400).send()
     }
   } 

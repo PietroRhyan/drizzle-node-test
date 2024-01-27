@@ -1,5 +1,6 @@
 import { authentication } from "modules/helpers";
 import { UsersRepository } from "../repositories/UsersRepository";
+import { AppError } from "errors/AppErrors";
 
 interface CreateUserUseCaseRequest {
   name: string
@@ -14,13 +15,13 @@ export class CreateUserUseCase {
 
   async execute({ name, email, password }: CreateUserUseCaseRequest) {
     if (!name || !email || !password) {
-      throw new Error("The fields 'name', 'email' and 'password' is required.")
+      throw new AppError("The fields 'name', 'email' and 'password' is required.")
     }
 
     const userExists = await this.usersRepository.findByEmail(email)
 
     if (userExists) {
-      throw new Error("User already exists.")
+      throw new AppError("User already exists.")
     }
 
     await this.usersRepository.create({ name, email, password: authentication(password) })

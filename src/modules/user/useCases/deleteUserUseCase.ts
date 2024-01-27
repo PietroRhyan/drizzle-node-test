@@ -1,3 +1,4 @@
+import { AppError } from "errors/AppErrors";
 import { UsersRepository } from "../repositories/UsersRepository";
 
 export class DeleteUserUseCase {
@@ -7,13 +8,13 @@ export class DeleteUserUseCase {
 
   async execute(id: string) {
     if (!id) {
-      throw new Error("The field 'id' is required.")
+      throw new AppError("The field 'id' is required.")
     } 
 
     const userExists = await this.usersRepository.findById(id)
 
     if (!userExists) {
-      throw new Error("User don't exist.")
+      throw new AppError("User don't exist.")
     }
 
     await this.usersRepository.delete(id)
