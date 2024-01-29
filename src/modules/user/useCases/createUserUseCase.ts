@@ -1,6 +1,6 @@
 import { authentication } from "../../helpers";
 import { UsersRepository } from "../repositories/UsersRepository";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 
 interface CreateUserUseCaseRequest {
   name: string
