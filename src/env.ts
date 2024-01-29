@@ -9,4 +9,19 @@ const envSchema = z.object({
   SECRET_KEY: z.string(),
 })
 
-export const env = envSchema.parse(process.env)
+const envServer = envSchema.safeParse({
+  PG_USER: process.env.PG_USER,
+  PG_PASSWORD: process.env.PG_PASSWORD,
+  PG_HOST: process.env.PG_HOST,
+  PG_DB: process.env.PG_DB,
+
+  SECRET_KEY: process.env.SECRET_KEY,
+})
+
+if (!envServer.success) {
+  console.error(envServer.error.issues)
+
+  throw new Error("There is a parse error in your environmental variables")
+}
+
+export const env = envServer.data

@@ -1,5 +1,6 @@
 import { InMemoryUsersRepository } from "../repositories/in-memory/InMemoryUsersRepository"
 import { CreateUserUseCase } from "./createUserUseCase"
+import { describe, it, expect } from 'vitest'
 
 describe('Create User Use Case', () => {
   it("should be able to create a new user", async () => {
