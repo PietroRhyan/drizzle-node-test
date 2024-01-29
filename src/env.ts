@@ -10,12 +10,12 @@ const envSchema = z.object({
 })
 
 const envServer = envSchema.safeParse({
-  PG_USER: process.env.PG_USER,
-  PG_PASSWORD: process.env.PG_PASSWORD,
-  PG_HOST: process.env.PG_HOST,
-  PG_DB: process.env.PG_DB,
+  PG_USER: process.env.PG_USER || "teste",
+  PG_PASSWORD: process.env.PG_PASSWORD || "teste",
+  PG_HOST: process.env.PG_HOST || "teste",
+  PG_DB: process.env.PG_DB || "teste",
 
-  SECRET_KEY: process.env.SECRET_KEY,
+  SECRET_KEY: process.env.SECRET_KEY || "teste",
 })
 
 if (!envServer.success) {
