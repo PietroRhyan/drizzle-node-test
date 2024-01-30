@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { GetAllUsersUseCase } from "../useCases/getAllUsersUseCase";
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 
 export class GetAllUsersController {
   async handle(req: Request, res: Response): Promise<Response> {

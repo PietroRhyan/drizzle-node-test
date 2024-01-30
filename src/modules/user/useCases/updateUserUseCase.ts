@@ -1,4 +1,4 @@
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 import { UsersRepository } from "../repositories/UsersRepository";
 import { authentication } from "modules/helpers";
 

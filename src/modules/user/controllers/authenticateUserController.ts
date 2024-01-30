@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { SESSION_TOKEN } from "../../../constants/";
 import { AuthenticateUserUseCase } from "../useCases/authenticateUserUseCase";
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 
 export class AuthenticateUserController {
   async handle(req: Request, res: Response): Promise<Response> {

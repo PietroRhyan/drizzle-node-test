@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserUseCase } from "../useCases/createUserUseCase";
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 
 export class CreateUserController {
   async handle(req: Request, res: Response): Promise<Response> {

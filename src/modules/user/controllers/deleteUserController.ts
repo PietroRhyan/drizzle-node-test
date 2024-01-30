@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import { InfraUsersRepository } from "../repositories/infra/InfraUsersRepository"
 import { DeleteUserUseCase } from "../useCases/deleteUserUseCase"
-import { AppError } from "errors/AppErrors"
+import { AppError } from "../../../errors/AppErrors"
 
 export class DeleteUserController {
   async handle(req: Request, res: Response): Promise<Response> {

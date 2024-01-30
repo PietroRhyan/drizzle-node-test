@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { SESSION_TOKEN } from "../constants/";
 import { InfraUsersRepository } from "modules/user/repositories/infra/InfraUsersRepository";
 import { GetUserBySessionTokenUseCase } from "modules/user/useCases/getUserBySessionTokenUseCase";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../errors/AppErrors";
 
 export class isAuthenticated {
   async handle(req: Request, res: Response, next: NextFunction) {

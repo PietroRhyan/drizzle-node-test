@@ -1,6 +1,6 @@
 import { authentication, generateSessionToken } from "modules/helpers";
 import { UsersRepository } from "../repositories/UsersRepository";
-import { AppError } from "errors/AppErrors";
+import { AppError } from "../../../errors/AppErrors";
 
 interface AuthenticateUserUseCaseRequest {
   email: string
