@@ -20,9 +20,9 @@ yarn
 ```
 
 Here I'm using Docker Compose to generate my Postgres Database Image with some credentials, I recommend you 
-to use the same credentials of your env file. The key of the values of the credentials is in `.env.example` 
+to use the same credentials of your env file. The key of the values of the credentials is in `.env.example`. 
 
-After you setup and initiate your Postgres Image, you need to generate the migations and push to database. 
+After you setup and initiate your Postgres Image, you need to generate the migrations and push to database. 
 See the code below:
 
 ```

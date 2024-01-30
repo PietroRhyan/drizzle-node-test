@@ -1,6 +1,6 @@
 import { AppError } from "../../../errors/AppErrors";
 import { UsersRepository } from "../repositories/UsersRepository";
-import { authentication } from "modules/helpers";
+import { authentication } from "../../helpers";
 
 interface UpdateUserUseCaseReqRes {
   id?: string

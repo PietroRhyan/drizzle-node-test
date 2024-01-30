@@ -1,4 +1,4 @@
-import { authentication, generateSessionToken } from "modules/helpers";
+import { authentication, generateSessionToken } from "../../helpers";
 import { UsersRepository } from "../repositories/UsersRepository";
 import { AppError } from "../../../errors/AppErrors";
 
